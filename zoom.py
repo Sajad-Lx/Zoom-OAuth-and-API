@@ -21,20 +21,24 @@ class ZoomOAuth:
         self.id_secret_encrypted = base64.b64encode(
             (self.__client_id + ':' + self.__client_secret).encode('utf-8')).decode('utf-8')
 
-    # def request_authorization_code(self):
-    #     """
-    #     This method is used to request the authorization code.
-    #     """
+    def request_authorization_code(self):
+        """
+        This method is used to request the authorization code.
+        """
 
-    #     params = {
-    #         "client_id": self.__client_id,
-    #         "response_type": "code",
-    #         "redirect_uri": self.__redirect_uri,
-    #         "state": "12345",  # Optional
-    #     }
-    #     response = requests.post(
-    #         self.__auth_url+'authorize', params=params)
-    #     return response
+        params = {
+            "client_id": self.__client_id,
+            "response_type": "code",
+            "redirect_uri": self.__redirect_uri,
+            # "state": "12345",  # Optional
+        }
+        url = self.__auth_url+'authorize'+'?' + \
+            '&'.join(['='.join([k, v]) for k, v in params.items()])
+
+        # Direct User to this url. This will ask the user to authorize the app.
+        # If authorized, the user will be redirected to the redirect_uri with authorization code in the code query parameter.
+        # example: https://[redirect_uri]/?code=obBEe8ewaL_KdyNjniT4KPd8ffDWt9fGB
+        return url
 
     def get_first_token(self, code):
         """
@@ -71,7 +75,7 @@ class ZoomOAuth:
 
     def get_access_token(self, refresh_token):
         """
-        This method is used to get the new access token.
+        This method is used to get the new access token using refresh_token.
         Refresh tokens expire after 15 years. 
         The latest refresh token must always be used for the next refresh request.
 
