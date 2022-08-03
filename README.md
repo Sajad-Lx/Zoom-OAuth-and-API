@@ -8,6 +8,11 @@ For getting access_token at first time you need to get authorization code from Z
 
 Then, it will return a response which will have refresh_token. You have to store refresh_token for further API calls.
 
+For getting authorization code, direct the user to https://zoom.us/oauth/authorize
+
+> Example
+>> https://zoom.us/oauth/authorize?response_type=code&client_id=7lstjK9NTyett_oeXtFiEQ&redirect_uri=https://yourapp.example.com
+
 For every API call you have to update old refresh_token to new token.
 
 Feel free to add or change code and leave grammatical mistakes in document (👉ﾟヮﾟ)👉
