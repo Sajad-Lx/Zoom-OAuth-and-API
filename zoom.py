@@ -261,3 +261,56 @@ class ZoomAPI:
         response = requests.put(
             self.__api_url+'meetings/'+meeting_id, headers=headers, json=data)
         return response
+
+    def list_users(self, refresh_token):
+        """
+        This method is used to get the list of users.
+        Link - https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#tag/Users/operation/users
+        """
+        headers = {
+            'Authorization': 'Bearer ' + ZoomOAuth().get_access_token(refresh_token=refresh_token).json()['access_token']
+        }
+        response = requests.get(
+            self.__api_url+'users', headers=headers)
+        return response
+
+    def get_user_details(self, refresh_token, user_id):
+        """
+        This method is used to get the details of a user.
+        Link - https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#tag/Users/operation/user
+        """
+        headers = {
+            'Authorization': 'Bearer ' + ZoomOAuth().get_access_token(refresh_token=refresh_token).json()['access_token']
+        }
+        response = requests.get(
+            self.__api_url+'users/'+user_id, headers=headers)
+        return response
+
+    def check_user_email(self, refresh_token, email):
+        """
+        This method is used to check if a user exists.
+
+        ```Note```: You can successfully check if a user is a
+        registered Zoom user only if the user ```signed up
+        for Zoom via email and is within your account.```
+        If you provide an email address of a user who is
+        not in your account, the value of "existed_email"
+        parameter will be "false" irrespective of whether
+        or not the user is registered with Zoom. 
+        The response of this API call will not include
+        users who joined Zoom using options such as 
+        "Sign in with SSO", "Sign in with Google" or 
+        "Sign in with Facebook" even if they are in 
+        the same account as yours.
+
+        Link - https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#tag/Users/operation/userEmail
+        """
+        headers = {
+            'Authorization': 'Bearer ' + ZoomOAuth().get_access_token(refresh_token=refresh_token).json()['access_token']
+        }
+        data = {
+            "email": email
+        }
+        response = requests.get(
+            self.__api_url+'users/email', headers=headers, json=data)
+        return response
